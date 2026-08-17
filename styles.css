@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body{ 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    min-height: 100vh;
+    background: #4a98f7;
+}
+
+.container{
+    display: flex; 
+    flex-direction: column; 
+    width: 100%; 
+    gap: 10px; 
+    padding: 10px; 
+    max-width: 1050px;
+}
+
+section {
+    background: #ffffff; 
+    border-radius: 5px;
+}
+
+.tools{ 
+    width: 100%;
+    height: 100px; 
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tools .row{
+    border-right: 1px solid #000000; 
+    margin-right: 10px;
+}
+
+.tools .options {
+    list-style: none; 
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+}
+
+.row .options .option {
+    cursor: pointer; /* ahahaha self explanatory. turns cursor to pointer when u get to the specific options */
+}
+
+#sizeSlider {
+    width: 100px;
+}
+
+.tools .options li {
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.tools .shapes .options { 
+    grid-template-columns: repeat(2, 1fr 1fr); /* helps us add this column into the two rows */
+    /* as in, it makes each column have 2 icons in it and repeats the columns. this makes everything neat and tidy, just like my room! */ 
+}
+
+.option:is(:hover, .active) :where(span, label){
+    color: #4a98f7; 
+    /* the reason why the pencil turns blue by default is because in index.html, the pencil is the one that's set to "option active tool" */
+}
+
+.tools .shapes .title {
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+}
+
+.tools .colors {
+    border: none; /* remove border of colors */
+}
+
+.colors .option{
+    height: 20px; 
+    width: 20px;
+    border-radius: 50%;
+    margin-top: 3px; 
+    position: relative; 
+}
+
+.colors .option:nth-child(1){
+    background-color: #ffffff;
+    border: 1px solid #bfbfbf;
+}
+
+.colors .option:nth-child(2) {
+    background-color: #030303;
+}
+
+.colors .option:nth-child(3) {
+    background-color: #e12a2a;
+}
+
+.colors .option:nth-child(4) {
+    background-color: #64d458;
+}
+
+.colors .option:nth-child(5) {
+    background-color: #5885d4;
+}
+
+.colors .option:nth-child(6) {
+    width: 50px;
+}
+
+.colors .option.selected::before{
+    /* if it's directly the element, use the before or after and select position to absolute w/ empt ycontent*/
+    position: absolute; 
+    content: "";
+    top: 50%;
+    left: 50%; 
+    height: 12px; 
+    width: 12px; 
+    background: inherit0; 
+    border-radius: inherit; 
+    border: 2px solid #ffffff; /* helps add the white ring border */
+    transform: translate(-50%, -50%);
+    /* BUT REALIZED: IF THE BORDER FOR PAINT SELECTION IS WHITE, THEN WHEN U SELECT THE WHITE PAINT, NOTHING WILL SHOW UP*/
+    /* OH NO */
+}
+
+.colors .option:first-child.selected::before {
+    border-color: grey;
+    /* worry not! just change border color to grey if white is selected (white = first child) */
+    /* btw for testing, if you want to see how each color palette looks when selected, gotta go back to index.html and change that huge set of "li class option li" (like the one where it's like that 5 times in a row) and set one of them to "option selected" manually */
+}
+
+.drawingArea canvas { 
+    width: 100%; 
+    height: 500px; 
+    border-radius: 10px;
+}
+
+.buttons { 
+    display: flex; 
+    justify-content: center; 
+    gap: 15px;
+}
+
+button {
+    border: none; 
+    outline: none; 
+    padding: 10px; 
+    border-radius: 5px;
+    cursor: pointer;
+}
