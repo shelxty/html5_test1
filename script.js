@@ -104,7 +104,7 @@ const drawHexagon = (e) => {
     const sideLength = Math.abs(prevMouseX - e.offsetX);
     ctx.beginPath();
     for (let i = 0; i < 6; i++){
-        const angle = ((2 * Math.PI) / 6);
+        const angle = ((2 * Math.PI) / 6) * i;
         const x = e.offsetX + sideLength * Math.cos(angle);
         const y = e.offsetY + sideLength * Math.sin(angle);
         ctx.lineTo(x, y);
@@ -113,9 +113,51 @@ const drawHexagon = (e) => {
     fillColor.checked ? ctx.fill() : ctx.stroke();
 };
 
-const drawPentagon = (e) => {};
-const drawLine = (e) => {};
-const drawArrow = (e) => {}; 
+const drawPentagon = (e) => {
+    const sideLength = Math.abs(prevMouseX - e.offsetX);
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++){
+        const angle = ((2 * Math.PI) / 5) * i - Math.PI / 2;
+        const x = e.offsetX + sideLength * Math.cos(angle);
+        const y = e.offsetY + sideLength * Math.sin(angle);
+        ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    fillColor.checked ? ctx.fill() : ctx.stroke();
+};
+
+const drawLine = (e) => {
+    ctx.beginPath();
+    ctx.moveTo(prevMouseX, prevMouseY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+};
+const drawArrow = (e) => {
+    const headLength = 15;
+    const angle = Math.atan2(e.offsetY - prevMouseY, e.offsetX - prevMouseX);
+    ctx.beginPath();
+    ctx.moveTo(prevMouseX, prevMouseY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(
+        e.offsetX - headLength * Math.cos(angle - Math.PI / 6), 
+        e.offsetY - headLength * Math.sin(angle - Math.PI / 6)
+    );
+    
+    ctx.lineTo(e.offsetX, e.offsetY);
+    
+    ctx.lineTo(
+        e.offsetX - headLength * Math.cos(angle + Math.PI / 6), 
+        e.offsetY - headLength * Math.sin(angle + Math.PI / 6)
+    );
+    ctx.closePath();
+    ctx.fill();
+}; 
+
+sizeSlider.addEventListener("change", () => (brushWidth = sizeSlider.value));
+
 const drawCurve = (e) => {};
 
 const drawBrush = (e) => {
