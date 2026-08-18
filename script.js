@@ -31,7 +31,7 @@ const setCanvasBackground = () => {
 window.addEventListener("load", ()=>{
     canvas.width = canvas.offsetWidth; 
     canvas.height = canvas.offsetHeight;
-    setCanvasBackground; 
+    setCanvasBackground(); 
 });
 
 toolBtns.forEach((btn) => {
@@ -43,9 +43,6 @@ toolBtns.forEach((btn) => {
     });
 });
 
-canvas.addEventListener("mousedown", startDraw);
-canvas.addEventListener("mousemove", drawing);
-canvas.addEventListener("mouseup", () => (isDrawing = false), saveState());
 
 const startDraw = (e) => {
     isDrawing = true; 
@@ -66,7 +63,27 @@ const drawPencil = (e) => {
     ctx.stroke();
 };
 
-const drawRect = (e) => {};
+// btw to make an empty const, "const drawTriangle = (e) => {};""
+const drawRect = (e) => {
+    const width = prevMouseX - e.offsetX;
+    const height = prevMouseY - e.offsetY;
+    if(!fillColor.checked) {
+        return ctx.strokeRect(e.offsetX, e.offsetY, width, height);
+    }
+    // const width = prevMouseX - e.offsetX; 
+    // const height = prevMouseY - e.offsetY; 
+    ctx.fillRect(e.offsetX, e.offsetY, width, height);
+};
+
+const drawCircle = (e) => {
+    ctx.beginPath();
+    let radius = Math.sqrt(
+        Math.pow(prevMouseX - e.offsetX, 2) + Math.pow(prevMouseY - e.offsetY, 2)
+    );
+    ctx.arc(prevMouseX, prevMouseY, radius, 0, 2 * Math.PI);
+    fillColor.checked ? ctx.fill() : ctx.stroke();
+};
+
 const drawTriangle = (e) => {};
 const drawSquare = (e) => {};
 const drawHexagon = (e) => {};
@@ -87,7 +104,7 @@ const drawing = (e) => {
     ctx.putImageData(snapshot, 0, 0);
 
     if(
-        (selectedTool === "pencil" && selectedTool === "brush") || selectedTool === "eraser")
+        (selectedTool === "pencil" || selectedTool === "brush") || selectedTool === "eraser")
     {
         ctx.strokeStyle = selectedTool === "eraser" ?"#ffffff":selectedColor;
         ctx.lineTo(e.offsetX, e.offsetY);
@@ -139,7 +156,10 @@ function saveState() {
 
 canvas.addEventListener("mousedown", startDraw);
 canvas.addEventListener("mousemove", drawing);
-canvas.addEventListener("mouseup", () => (isDrawing = false), saveState()); 
+canvas.addEventListener("mouseup", () => {
+    isDrawing = false;
+    saveState(); 
+});
 // store history whenever savestate
 
 undoButton.addEventListener("click", () => {
@@ -157,10 +177,15 @@ undoButton.addEventListener("click", () => {
     }
 });
 
-redoButtonButton.addEventListener("click", () => { 
-    if(historyStep < historyStep.length - 1){
+redoButton.addEventListener("click", () => { 
+    if (historyStep < history.length - 1){
         historyStep++;
-        const img
+        const img = new Image();
+        img.src = history[historyStep];
+        img.onload = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        };
     }
 });
 
