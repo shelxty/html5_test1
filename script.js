@@ -81,12 +81,38 @@ const drawCircle = (e) => {
         Math.pow(prevMouseX - e.offsetX, 2) + Math.pow(prevMouseY - e.offsetY, 2)
     );
     ctx.arc(prevMouseX, prevMouseY, radius, 0, 2 * Math.PI);
+    fillColor.checked ? ctx.fill() : ctx.stroke(); // the quintessential line that actually draws stuff
+};
+
+const drawTriangle = (e) => {
+    ctx.beginPath();
+    ctx.moveTo(prevMouseX, prevMouseY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.lineTo(prevMouseX * 2 - e.offsetX, e.offsetY);
+    ctx.closePath(); 
     fillColor.checked ? ctx.fill() : ctx.stroke();
 };
 
-const drawTriangle = (e) => {};
-const drawSquare = (e) => {};
-const drawHexagon = (e) => {};
+const drawSquare = (e) => {
+    const sideLength = Math.abs(prevMouseX - e.offsetX);
+    ctx.beginPath(); 
+    ctx.rect(e.offsetX, e.offsetY, sideLength, sideLength);
+    fillColor.checked ? ctx.fill() : ctx.stroke();
+};
+
+const drawHexagon = (e) => {
+    const sideLength = Math.abs(prevMouseX - e.offsetX);
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++){
+        const angle = ((2 * Math.PI) / 6);
+        const x = e.offsetX + sideLength * Math.cos(angle);
+        const y = e.offsetY + sideLength * Math.sin(angle);
+        ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    fillColor.checked ? ctx.fill() : ctx.stroke();
+};
+
 const drawPentagon = (e) => {};
 const drawLine = (e) => {};
 const drawArrow = (e) => {}; 
