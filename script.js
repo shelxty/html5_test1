@@ -158,6 +158,19 @@ const drawArrow = (e) => {
 
 sizeSlider.addEventListener("change", () => (brushWidth = sizeSlider.value));
 
+colorPicker.addEventListener("change", () => { // whenever we change, insert this
+    colorPicker.parentElement.style.background = colorPicker.value;
+    colorPicker.parentElement.click(); 
+});
+
+colorBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        document.querySelector(".options .selected").classList.remove("selected");
+        btn.classList.add("selected");
+        selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color");
+    })
+})
+
 const drawCurve = (e) => {};
 
 const drawBrush = (e) => {
@@ -257,5 +270,16 @@ redoButton.addEventListener("click", () => {
     }
 });
 
+clearCanvas.addEventListener("click", () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setCanvasBackground();
+});
+
+saveImage.addEventListener("click", () => {
+    const link = document.createElement("a"); // link tag of a
+    link.download = `${Date.now()}`.jpg; 
+    link.href = canvas.toDataURL();
+    link.click();
+});
 
 // console.log(canvas);
